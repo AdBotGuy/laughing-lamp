@@ -1,0 +1,1522 @@
+/*                                                                                                            
+ ▄▄▄▄▄▄▄ ▄▄▄▄  ▄▄▄  ▄▄▄▄   ▄▄▄▄   ▄▄▄   ▄▄▄    ▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄   ▄▄▄▄▄ ▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄ 
+█████▀▀▀ ▀███  ███  ███▀ ▄██▀▀██▄ ███   ███   █████▀▀▀ ███▀▀▀▀▀ ███▀▀███▄  ███  ███▀▀███▄ ▀▀▀███▀▀▀ █████▀▀▀ 
+ ▀████▄   ███  ███  ███  ███  ███ ▀███▄███▀    ▀████▄  ███      ███▄▄███▀  ███  ███▄▄███▀    ███     ▀████▄  
+   ▀████  ███▄▄███▄▄███  ███▀▀███   ▀███▀        ▀████ ███      ███▀▀██▄   ███  ███▀▀▀▀      ███       ▀████ 
+███████▀   ▀████▀████▀   ███  ███    ███      ███████▀ ▀███████ ███  ▀███ ▄███▄ ███          ███    ███████▀ 
+// ***********************************************
+// * SWAY COD                           *
+// * VERSION : 1.3                               *
+// ***********************************************
+                                                                                                            
+GET 1-1 SUPPORT, GUIDES AND UPDATES AT DISCORD.GG/SWAY
+
+
+DO NOT CHANGE ANYTHING HERE, ALL CHANGES SHOULD BE MADE IN THE MENU.
+*/
+
+
+
+define SCREENSAVER_TIME = 60000;
+define LOADING_SCREEN_TIME = 6000;
+define LOADING_PHASE_TIME = 2000;
+
+const string _nothingToEdit[] = { "Nothing", "To Edit" };
+
+const string _homeScreenStrings[] = { "Sway", "COD", "Press LT + Start", "Press L2 + Options" };
+const string _logoStrings[] = { "Sway", "COD" };
+const string _loadingPhase2Strings[] = {" "};
+const string _loadingPhase3Strings[] = { "ENJOY!" };
+const string _menuScreenStrings[] = { "Recoil Assist", "Aim Assist", "Left Stick Assist", "Fire and Aim Boost", "Y Spam", "Slide Cancel", "Headshot Assist", "Hold Breath", "Ping Enemy", "Shot Dodge", "Rapid Fire", "Aim Spam", "VM Speed", "Button Layout", "Stick Layout" };
+
+const string _antiRecoilStrings[] = { "Vertical", "Horizontal" };
+const string _aimAssistStrings[] = { "Aim Size", "Fire Size", "Aim and Fire Size", "Speed", "Hip Size" };
+const string _aimFireBoostStrings[] = { "Boost" };
+const string _yySpamStrings[] = { "Swap Delay" };
+const string _slideCancelStrings[] = { "Slide Delay" };
+const string _headAssistStrings[] = { "Strength", "Hold Time" };
+const string _enemyPingStrings[] = { "Ping Delay" };
+const string _dodgeShotStrings[] = { "Start Time", "Delay" };
+const string _rapidFireStrings[] = { "RF Hold", "RF Release" };
+const string _aimAbuseStrings[] = { "Abuse Hold", "Abuse Rest" };
+
+const string _buttonLayoutTop[] = { 
+	"Default", "Tactical", "Lefty", "Nomad/Charlie", "Nomad/Charlie", "Nomad/Charlie", "Bumper Jumper", "Bumper Jumper", "One-hand", "Stick and Move", "Brawler", "Beast",
+	"Default", "Tactical", "Lefty", "Nomad/Charlie", "Nomad/Charlie", "Nomad/Charlie", "Bumper Jumper", "Bumper Jumper", "One-hand", "Stick and Move", "Brawler", "Beast"
+};
+const string _buttonLayoutBottom[] = {
+	"", "", "", "", "Tactical", "Lefty", "", "Tactical", "Gunslinger", "", "", "",
+	"Flipped", "Flipped", "Flipped", "Flipped", "Tactical Flipped", "Lefty Flipped", "Flipped", "Tactical Flipped", "Gunslinger Flipped", "Flipped", "Flipped", "Flipped"
+};
+
+const string _stickLayoutTop[] = { "Default", "Southpaw", "Legacy", "Legacy Southpaw", "Southpaw", "Legacy Southpaw" };
+const string _stickLayoutBottom[] = { "", "", "", "", "No Click Swap", "No Click Swap" };
+
+const string _toggleStrings[] = { "OFF", "ON" };
+const string _vmSpeedStrings[] = { "Default", "8ms", "6ms", "4ms", "2ms", "1ms" };
+
+
+const uint8 _buttonLayout[][] = {
+	{ XB1_LT, XB1_RB, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_B, XB1_A, XB1_RS, XB1_X,	XB1_LB }, 
+	{ XB1_LT, XB1_RB, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_RS, XB1_A, XB1_B, XB1_X,	XB1_LB }, 	
+	{ XB1_RT, XB1_LB, XB1_UP, XB1_RS, XB1_LT, XB1_Y, XB1_B, XB1_A, XB1_LS, XB1_X,	XB1_RB }, 	
+	{ XB1_RB, XB1_LT, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_B, XB1_A, XB1_RS, XB1_X,	XB1_LB }, 
+	{ XB1_RB, XB1_LT, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_RS, XB1_A, XB1_B, XB1_X,	XB1_LB }, 	
+	{ XB1_LB, XB1_RT, XB1_UP, XB1_RS, XB1_LT, XB1_Y, XB1_B, XB1_A, XB1_LS, XB1_X,	XB1_RB }, 	
+	{ XB1_LT, XB1_RB, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_B, XB1_LB, XB1_RS, XB1_X,	XB1_A }, 
+	{ XB1_LT, XB1_RB, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_RS, XB1_LB, XB1_B, XB1_X,	XB1_A }, 	
+	{ XB1_LT, XB1_RT, XB1_UP, XB1_LS, XB1_LB, XB1_Y, XB1_B, XB1_A, XB1_RS, XB1_X,	XB1_RB }, 	
+	{ XB1_LT, XB1_RB, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_B, XB1_RS, XB1_A, XB1_X,	XB1_LB }, 	
+	{ XB1_LT, XB1_RS, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_B, XB1_A, XB1_RB, XB1_X,	XB1_LB }, 	
+	{ XB1_LT, XB1_RS, XB1_UP, XB1_LS, XB1_RT, XB1_Y, XB1_B, XB1_LB, XB1_RB, XB1_X,	XB1_A }, 	
+
+	{ XB1_LB, XB1_RT, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_B, XB1_A, XB1_RS, XB1_X,	XB1_LT }, 	
+	{ XB1_LB, XB1_RT, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_RS, XB1_A, XB1_B, XB1_X,	XB1_LT }, 	
+	{ XB1_RB, XB1_LT, XB1_UP, XB1_RS, XB1_LB, XB1_Y, XB1_B, XB1_A, XB1_LS, XB1_X,	XB1_RT }, 	
+	{ XB1_RT, XB1_LB, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_B, XB1_A, XB1_RS, XB1_X,	XB1_LT }, 
+	{ XB1_RT, XB1_LB, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_RS, XB1_A, XB1_B, XB1_X,	XB1_LT }, 	
+	{ XB1_LT, XB1_RB, XB1_UP, XB1_RS, XB1_LB, XB1_Y, XB1_B, XB1_A, XB1_LS, XB1_X,	XB1_RT }, 	
+	{ XB1_LB, XB1_RT, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_B, XB1_LT, XB1_RS, XB1_X,	XB1_A }, 	
+	{ XB1_LB, XB1_RT, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_RS, XB1_LT, XB1_B, XB1_X,	XB1_A }, 	
+	{ XB1_LB, XB1_RB, XB1_UP, XB1_LS, XB1_LT, XB1_Y, XB1_B, XB1_A, XB1_RS, XB1_X,	XB1_RT }, 	
+	{ XB1_LB, XB1_RT, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_B, XB1_RS, XB1_A, XB1_X,	XB1_LT }, 	
+	{ XB1_LB, XB1_RS, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_B, XB1_A, XB1_RT, XB1_X,	XB1_LT }, 	
+	{ XB1_LB, XB1_RS, XB1_UP, XB1_LS, XB1_RB, XB1_Y, XB1_B, XB1_LT, XB1_RT, XB1_X,	XB1_A } 	
+};
+
+const uint8 _stickLayout[][] = {  
+	{ POLAR_LY, POLAR_LX, POLAR_RY, POLAR_RX }, 
+	{ POLAR_RY, POLAR_RX, POLAR_LY, POLAR_LX },
+	{ POLAR_LY, POLAR_RX, POLAR_RY, POLAR_LX }, 
+	{ POLAR_RY, POLAR_LX, POLAR_LY, POLAR_RX }, 
+	{ POLAR_RY, POLAR_RX, POLAR_LY, POLAR_LX }, 
+	{ POLAR_RY, POLAR_LX, POLAR_LY, POLAR_RX }  
+}
+
+const uint8 _fontHeight[] = { OLED_FONT_SMALL_HEIGHT, OLED_FONT_MEDIUM_HEIGHT, OLED_FONT_LARGE_HEIGHT };
+const uint8 _fontWidth[] = { OLED_FONT_SMALL_WIDTH, OLED_FONT_MEDIUM_WIDTH, OLED_FONT_LARGE_WIDTH };
+
+
+const uint8 _subMenuData[][] = {
+	{ TRUE, AntiRecoil, FALSE, TRUE, Setting_Toggle }, 
+	{ TRUE, AimAssist, FALSE, TRUE, Setting_Toggle },
+	{ FALSE, LeftStickAssist, FALSE, TRUE, Setting_Toggle }, 
+	{ TRUE, AimFireBoost, FALSE, TRUE, Setting_Toggle }, 
+	{ TRUE, YYSpam, FALSE, TRUE, Setting_Toggle }, 
+	{ TRUE, SlideCancel, FALSE, TRUE, Setting_Toggle },
+	{ TRUE, HeadAssist, FALSE, TRUE, Setting_Toggle }, 
+	{ FALSE, HoldBreath, FALSE, TRUE, Setting_Toggle }, 
+	{ TRUE, EnemyPing, FALSE, TRUE, Setting_Toggle }, 
+	{ TRUE, DodgeShot, FALSE, TRUE, Setting_Toggle }, 
+	{ TRUE, RapidFire, FALSE, TRUE, Setting_Toggle }, 
+	{ TRUE, AimAbuse, FALSE, TRUE, Setting_Toggle },
+	{ FALSE, VMSpeed, 0, 5, Setting_VM },
+	{ FALSE, ButtonLayout, Default, BeastFlipped, Setting_ButtonLayout }, 
+	{ FALSE, StickLayout, Default, LegacySouthpawNoClickSwap, Setting_StickLayout } 
+};
+
+const uint8 _subMenuSize[] = {
+	1,	
+	4, 	
+	0,	
+	0,	
+	0,	
+	0,	
+	1,	
+	0,	
+	0,
+	1,	
+	1,	
+	1	
+};
+
+
+const int8 _antiRecoilSettings[][] = {
+	{ 0, 100, Setting_Number }, 	
+	{ -100, 100, Setting_Number } 	
+};
+const uint8 _aimAssistSettings[][] = {
+	{ 1, 50, Setting_Number }, 		
+	{ 1, 50, Setting_Number }, 		
+	{ 1, 50, Setting_Number }, 		
+	{ 1, 100, Setting_Number }, 
+	{ 1, 50, Setting_Number } 	
+};
+const uint8 _aimFireBoostSettings[][] = {
+	{ 1, 10, Setting_Number }	
+};
+const uint8 _yySpamSettings[][] = {
+	{ 1, 100, Setting_Number }		
+};
+const uint8 _slideCancelSettings[][] = {
+	{ 1, 100, Setting_Number }		
+};
+const uint16 _headAssistSettings[][] = {
+	{ 1, 100, Setting_Number },		
+	{ 1, 2000, Setting_Number }		
+};
+const int16 _enemyPingSettings[][] = {
+	{ 1, 5000, Setting_Number }		
+};
+const uint16 _dodgeShotSettings[][] = {
+	{ 1, 100, Setting_Number },		
+	{ 1, 500, Setting_Number }		
+};
+const uint16 _rapidFireSettings[][] = {
+	{ 1, 1000, Setting_Number },	
+	{ 1, 1000, Setting_Number }		
+};
+const uint16 _aimAbuseSettings[][] = {
+	{ 1, 300, Setting_Number },		
+	{ 1, 300, Setting_Number }		
+};
+
+const int8 _vmSpeed[] = { 0, -2, -4, -6, -8, -9 };
+
+
+enum {
+	AimAssistSize = 0, AimAssistAngle,
+	
+	ADS = 0, Lethal, Ping, Focus, Fire, SwitchWeapon, Action, Jump, Melee, Reload, Tact,
+	
+	Version_Major = 0, Version_Minor,
+	
+	HomeScreen_Title = 0, HomeScreen_Subtitle, HomeScreen_Xbox, HomeScreen_PS,
+	
+	Buffer = 0, BufferCopyValue, BufferDigitCount, BufferDigits,
+	LedUpdate = BufferDigits + 6, Update,
+	
+	AlignCenter = -3, AlignBottom, AlignRight, AlignLeft = 2, AlignTop = 4,
+	Separator_Bottom = 1, Separator_Top = 2, Separator_Both = Separator_Bottom | Separator_Top,
+	
+	HoldingADS = 0, HoldingFire,
+	
+	HasSubMenu = 0, Variable, OptionMin, OptionMax, OptionType, Page, SettingMin, SettingMax, SettingType, SettingVariable,
+	
+	AntiRecoil = 0, Vertical, Horizontal,
+	AimAssist, AimSize, FireSize, AimFireSize, Speed, HipSize, 
+	LeftStickAssist, 
+	AimFireBoost, Boost, 
+	YYSpam, YYDelay, 
+	SlideCancel, SlideDelay, 
+	HeadAssist, HeadAssistStrength, HeadAssistTime, 
+	HoldBreath,
+	EnemyPing, EnemyPingDelay, 
+	DodgeShot, DodgeStartTime, DodgeDelayTime, 
+	RapidFire, RapidFireHoldTime, RapidFireReleaseTime, 
+	AimAbuse, AimAbuseHoldTime, AimAbuseRestTime, 
+	VMSpeed,
+	ButtonLayout,
+	StickLayout, 
+	
+	Default = 0, Tactical, Lefty, NomadCharlie, NomadCharlieTactical, NomadCharlieLefty, BumperJumper, BumperJumperTactical, OneHandGunslinger, StickAndMove, Brawler, Beast,
+	DefaultFlipped, TacticalFlipped, LeftyFlipped, NomadCharlieFlipped, NomadCharlieTacticalFlipped, NomadCharlieLeftFlipped, BumperJumperFlipped, BumperJumperTacticalFlipped, OneHandGunslingerFlipped, StickAndMoveFlipped, BrawlerFlipped, BeastFlipped,
+	Setting_ButtonLayout = 0, Setting_Number, Setting_StickLayout, Setting_Toggle, Setting_VM,
+	Southpaw = 1, Legacy, LegacySouthpaw, SouthpawNoClickSwap, LegacySouthpawNoClickSwap,
+	
+	Bit = 0, Bits, Slot, Temp, Value,
+	
+	Screen = 0, ScreenSaver, SubMenu, YYSpamming, LoadingTimer, LoadingFrame, LoadingPhase,
+	
+	Screen_Loading = -3, Screen_Home = -2, Screen_Menu,
+	Screen_AntiRecoil, Screen_AimAssist, Screen_LeftStickAssist, Screen_AimFireBoost, Screen_YYSpam, Screen_SlideCancel, Screen_HeadAssist, Screen_HoldBreath, Screen_EnemyPing, Screen_DodgeShot, Screen_RapidFire, Screen_AimAbuse,
+
+  	Move = 0, Strafe, Look, Rotate, SprintButton, PolarRadius
+}
+
+
+int offset;
+int aimassist[2];
+int button[11];
+int display[11];
+int i;
+int input[2];
+int menu[10];
+int settings[34];
+int spvar[5];
+int state[7];
+int stick[6];
+	
+init {
+	SettingsLoad();
+}
+	
+	
+main {
+	ProcessLoading();
+	ProcessDisplay();
+	ProcessInput();
+	ProcessOutput();
+}
+
+
+function AdjustOption(adjustment) {
+	settings[menu[Variable]] = AdjustValue(settings[menu[Variable]], menu[OptionMin], menu[OptionMax], adjustment, TRUE);
+}
+
+function AdjustPage(adjustment) {
+	menu[Page] = AdjustValue(menu[Page], 0, _subMenuSize[state[Screen]], adjustment, FALSE);
+	UpdateSubMenuPageValueRange(menu[Page]);
+}
+
+function AdjustSetting(setting, adjustment) {
+	settings[setting] = clamp(settings[setting] + adjustment, menu[SettingMin], menu[SettingMax]);
+	display[Update] = TRUE;
+}
+
+function AdjustValue(value, lower, upper, adjustment, cyclable) {
+
+	if(adjustment > 0) {
+	
+		if(value + adjustment <= upper) {
+			display[Update] = TRUE;
+			return value + adjustment;
+		} else if(cyclable) {
+			display[Update] = TRUE;
+			return lower;
+		}
+	} else {
+		if(value + adjustment >= lower) {
+			display[Update] = TRUE;
+			return value + adjustment;
+		} else if(cyclable) {
+			display[Update] = TRUE;
+			return upper;
+		}
+	}
+
+	return Iif(adjustment > 0, upper, lower);
+}
+
+function ChangeScreen(new_screen) {
+	state[Screen] = new_screen;
+	state[ScreenSaver] = 0;
+	display[Update] = TRUE;
+	
+	reset_leds();
+	
+	if(new_screen == Screen_Home) {
+		SetButtonLayout();
+		SetStickLayout();
+		state[SubMenu] = 0;
+		vm_tctrl(_vmSpeed[settings[VMSpeed]]);
+		set_led(LED_1, 1);
+		set_led(LED_2, 1);
+		set_led(LED_3, 1);
+	}
+	else if(new_screen > Screen_Menu) {
+		menu[Page] = 0;
+		menu[SettingVariable] = 1;
+		UpdateSubMenuPageValueRange(0);
+		set_led(LED_4, 1); 
+	}
+	else {
+		vm_tctrl(0);
+		set_led(LED_4, 1);
+	}
+}
+
+function CheckScreenSaver() {
+	return FALSE;
+}
+
+function DrawSeparator(separator) {
+    if(separator & Separator_Bottom) {
+        line_oled(0, OLED_HEIGHT - 15, OLED_WIDTH - 1, OLED_HEIGHT - 15, 1, OLED_WHITE);
+    }
+
+    if(separator & Separator_Top) {
+        line_oled(0, 15, OLED_WIDTH - 1, 15, 1, OLED_WHITE);
+    }
+}
+
+function DrawOptionSetting(setting) {
+	switch(menu[OptionType]) {
+		case Setting_ButtonLayout {
+			if(duint8(_buttonLayoutBottom[setting])) {
+				PrintSmallString(AlignCenter, 25, _buttonLayoutTop[setting]);
+				PrintSmallString(AlignCenter, 36, _buttonLayoutBottom[setting]);
+			}
+			else {
+				PrintSmallString(AlignCenter, AlignCenter, _buttonLayoutTop[setting]);
+			}
+			break;
+		}
+		case Setting_StickLayout {
+			if(duint8(_stickLayoutBottom[setting])) {
+				PrintSmallString(AlignCenter, 25, _stickLayoutTop[setting]);
+				PrintSmallString(AlignCenter, 36, _stickLayoutBottom[setting]);
+			}
+			else {
+				PrintSmallString(AlignCenter, AlignCenter, _stickLayoutTop[setting]);
+			}
+			break;
+		}
+		case Setting_Toggle {
+			PrintMediumString(AlignCenter, AlignCenter, _toggleStrings[setting]);
+			break;
+		}
+		case Setting_VM {
+			PrintMediumString(AlignCenter, AlignCenter, _vmSpeedStrings[setting]);
+			break;
+		}
+	}
+}
+
+function ExecuteAimAbuse() {
+	if(!settings[AimAbuse] || !input[HoldingADS]) {
+		combo_stop(Combo_AimAbuse);
+		return;	
+	}
+	
+	combo_run(Combo_AimAbuse);
+}
+
+function ExecuteAimAssistv4() {
+	if(!settings[AimAssist]) {
+		return;
+	}
+	
+	ExecuteLeftStickAssist();
+	ExecuteAimFireBoost();
+	
+	if(input[HoldingADS]) {
+		aimassist[AimAssistSize] = Iif(input[HoldingFire], settings[AimFireSize], settings[AimSize]);
+		
+		combo_run(Combo_AimAssistv4);
+		return;
+	}
+	
+	combo_stop(Combo_AimAssistv4);
+	
+	aimassist[AimAssistSize] = Iif(input[HoldingFire], settings[FireSize], settings[HipSize]);
+	
+	Output(POLAR_RX, cos[aimassist[AimAssistAngle]] * aimassist[AimAssistSize]);
+	Output(POLAR_RY, sin[aimassist[AimAssistAngle]] * aimassist[AimAssistSize]);
+	
+	aimassist[AimAssistAngle] = (aimassist[AimAssistAngle] + settings[Speed]) % 360;
+}
+
+function ExecuteAimFireBoost() {
+	if(!settings[AimFireBoost] || !input[HoldingFire]) {
+		combo_stop(Combo_AimFireBoost);
+		return;
+	}
+	
+	if(input[HoldingADS]) {
+		combo_run(Combo_AimFireBoost);
+	} else {
+		combo_stop(Combo_AimFireBoost);
+	}
+}
+
+function ExecuteAntiRecoil() {
+	if(!settings[AntiRecoil] || !input[HoldingFire]) {
+		return;
+	}
+	
+	Output(POLAR_RX, settings[Horizontal] * 327);
+	Output(POLAR_RY, settings[Vertical] * 327);
+}
+
+function ExecuteDodgeShot() {
+	if(!settings[DodgeShot]) {
+		return;
+	}
+	
+	if(!input[HoldingADS] && event_press(button[Fire])) {
+		combo_run(Combo_DodgeShot);
+	}
+	
+	if(event_release(button[Fire]) || event_press(button[Action]) || event_press(button[Jump])) {
+		combo_stop(Combo_DodgeShot);
+	}
+}
+
+function ExecuteEnemyPing() {
+	if(!settings[EnemyPing] || !input[HoldingFire]) {
+		combo_stop(Combo_EnemyPing);
+		return;
+	}
+	
+	combo_run(Combo_EnemyPing);
+}
+
+function ExecuteHeadAssist() {
+	if(!settings[HeadAssist] || !input[HoldingFire]) {
+		combo_stop(Combo_HeadAssist);
+		return;
+	}
+	
+	if(input[HoldingADS] && event_press(button[Fire])) {
+		combo_run(Combo_HeadAssist);
+	}
+}
+
+function ExecuteHoldBreath() {
+	if(!settings[HoldBreath] || !input[HoldingADS]) {
+		return;	
+	}
+	
+	set_val(button[Focus], 100);
+}
+
+function ExecuteLeftStickAssist() {
+	if(!settings[LeftStickAssist]) {
+		combo_stop(Combo_LeftStickAssist);
+		return;
+	}
+	
+	combo_run(Combo_LeftStickAssist);
+}
+
+function ExecuteMods() {
+	deadzone(XB1_LT, XB1_RT, 100, 100);
+	
+	ExecuteAimAssistv4();
+	ExecuteAntiRecoil();
+	ExecuteYYSpam();
+	ExecuteSlideCancel();
+	ExecuteHeadAssist();
+	ExecuteHoldBreath();
+	ExecuteEnemyPing();
+	ExecuteDodgeShot();
+	ExecuteRapidFire();
+	ExecuteAimAbuse();
+}
+
+function ExecuteRapidFire() {
+	if(!settings[RapidFire] || !input[HoldingFire]) {
+		combo_stop(Combo_RapidFire);
+		return;
+	}
+	
+	combo_run(Combo_RapidFire);
+}
+
+function ExecuteSlideCancel() {
+	if(!settings[SlideCancel] || stick[PolarRadius] < 9700) {
+		return;
+	}
+	
+	if(event_release(button[Action])) {
+		combo_run(Combo_SlideCancel);
+	}
+}
+
+function ExecuteYYSpam() {
+	if(!settings[YYSpam]) {
+		combo_stop(Combo_YYSpam);
+		return;
+	}
+	
+	if(event_press(XB1_LS)) {
+		state[YYSpamming] = !state[YYSpamming];
+	}
+	
+	if(input[HoldingADS] || input[HoldingFire]) {
+		state[YYSpamming] = FALSE;
+		combo_stop(Combo_YYSpam);
+		return;
+	}
+	
+	if(state[YYSpamming]) {
+		combo_run(Combo_YYSpam);
+		return;
+	}
+
+	combo_stop(Combo_YYSpam);
+}
+
+function FlushBuffer(x, y, size, color) {
+	if(x == AlignRight) {
+		x = OLED_WIDTH - (display[Buffer] * _fontWidth[size]) - 3;
+	} else if(x == AlignCenter) {
+		x = (OLED_WIDTH >> 1) - ((display[Buffer] * _fontWidth[size]) >> 1);
+	}
+	
+	if(y == AlignBottom) {
+		y = OLED_HEIGHT - _fontHeight[size] - 2;
+	} else if(y == AlignCenter) {
+		y = (OLED_HEIGHT >> 1) - (_fontHeight[size] >> 1);
+	}
+	
+	puts_oled(clamp(x, 2, 127), clamp(y, 2, 63), size, display[Buffer], color);
+	
+	display[Buffer] = 0;
+}
+
+function GetStrafeStick() {
+	switch(Iif(settings[StickLayout] > LegacySouthpawNoClickSwap, settings[StickLayout] - LegacySouthpawNoClickSwap, settings[StickLayout])) {
+		case Default {
+			stick[SprintButton] = XB1_LS;
+			break;
+		} case Southpaw {
+			stick[SprintButton] = XB1_RS;
+			break;
+		} case Legacy {
+			stick[SprintButton] = Iif(abs(get_val(POLAR_RY)) > abs(get_val(POLAR_LX)), XB1_LS, XB1_RS);
+			break;
+		} case LegacySouthpaw {
+			stick[SprintButton] = Iif(abs(get_val(POLAR_LY)) > abs(get_val(POLAR_RX)), XB1_RS, XB1_LS);
+			break;
+		} case SouthpawNoClickSwap {
+			stick[SprintButton] = XB1_RS;
+			break;
+		} case LegacySouthpawNoClickSwap {
+			stick[SprintButton] = Iif(abs(get_val(POLAR_LY)) > abs(get_val(POLAR_RX)), XB1_RS, XB1_LS);
+			break;
+		}
+	}
+	
+	stick[PolarRadius] = get_polar(Iif(stick[SprintButton] == XB1_LS, POLAR_LS, POLAR_RS), POLAR_RADIUS);
+}
+
+function GetSubMenuHeader(sub_menu) {
+	switch(state[Screen]) {
+		case Screen_AntiRecoil { return _antiRecoilStrings[sub_menu]; }
+		case Screen_AimAssist { return _aimAssistStrings[sub_menu]; }
+		case Screen_AimFireBoost { return _aimFireBoostStrings[sub_menu]; }
+		case Screen_YYSpam { return _yySpamStrings[sub_menu]; }
+		case Screen_SlideCancel { return _slideCancelStrings[sub_menu]; }
+		case Screen_HeadAssist { return _headAssistStrings[sub_menu]; }
+		case Screen_EnemyPing { return _enemyPingStrings[sub_menu]; }
+		case Screen_DodgeShot { return _dodgeShotStrings[sub_menu]; }
+		case Screen_RapidFire { return _rapidFireStrings[sub_menu]; }
+		case Screen_AimAbuse { return _aimAbuseStrings[sub_menu]; }
+	}
+	
+	return 0;
+}
+
+function HandleHomeScreen() {
+	if(input[HoldingADS] && event_press(XB1_MENU)) {
+		ChangeScreen(Screen_Menu);
+		UpdateSettingsInfo();
+		return;
+	}
+}
+
+function HandleMenuScreen() {
+	if(event_press(XB1_DOWN)) {
+		ScrollMenu(1);
+		return;	
+	}
+
+	if(event_press(XB1_UP)) {
+		ScrollMenu(-1);
+		return;
+	}
+	
+	if(event_release(XB1_B)) {
+		SettingsSave();
+		return;
+	}
+	
+	if(event_press(XB1_RIGHT)) {
+		AdjustOption(1);
+		return;
+	}
+	
+	if(event_press(XB1_LEFT)) {
+		AdjustOption(-1);
+		return;
+	}
+	
+	if(event_press(XB1_A)) {
+		ChangeScreen(state[SubMenu]);
+		return;
+	}
+}
+
+function HandleSubMenuScreen() {
+	if(event_release(XB1_B)) {
+		ChangeScreen(Screen_Menu);
+		return;
+	}
+	
+	if(get_ival(XB1_LT)) {
+		if(event_press(XB1_UP)) {
+			AdjustSetting(menu[SettingVariable], 10);
+			return;
+		}
+		if(event_press(XB1_DOWN)) {
+			AdjustSetting(menu[SettingVariable], -10);
+			return;
+		}
+		if(event_press(XB1_LEFT)) {
+			AdjustSetting(menu[SettingVariable], -1);
+			return;
+		}
+		if(event_press(XB1_RIGHT)) {
+			AdjustSetting(menu[SettingVariable], 1);
+			return;
+		}
+	}
+	
+	if(event_press(XB1_DOWN)) {
+		AdjustPage(1);
+		return;
+	}
+	
+	if(event_press(XB1_UP)) {
+		AdjustPage(-1);
+		return;
+	}
+}
+
+function Iif(expression, true, false) {
+	if(expression) {
+		return true;
+	}
+	
+	return false;
+}
+
+function InsertCharacter(character) {
+	putc_oled(display[Buffer] + 1, character); 
+	display[Buffer]++;
+}
+
+function InsertNumber(number) {
+	if(number < 0) {
+		InsertCharacter(ASCII_MINUS);
+		number = abs(number); 
+	}
+	
+	display[BufferCopyValue] = number;
+	display[BufferDigitCount] = 0;
+	
+	do {
+		display[BufferCopyValue] /= 10;
+		display[BufferDigitCount]++;
+	} while(display[BufferCopyValue]);
+	
+	for(i = 0; i < display[BufferDigitCount]; i++) {
+		display[BufferDigits + i] = (number % 10) + 48;
+		number /= 10;
+	}
+	
+	for(i = display[BufferDigitCount] - 1; i >= 0; i--) {
+		InsertCharacter(display[BufferDigits + i]);
+	}
+}
+
+function InsertString(text) {
+	do {
+		InsertCharacter(dint8(text)); 
+		text++; 
+	} while(dint8(text));
+}
+
+function Output(stick, value) {
+	set_val(stick, clamp(value * (32767 - abs(get_val(stick))) / 32767 + get_val(stick), -32768, 32767));
+}
+
+
+function PrintLargeNumber(x, y, number) {
+	PrintNumber(x, y, OLED_FONT_LARGE, OLED_WHITE, number);
+}
+
+function PrintNumber(x, y, size, color, number) {
+	InsertNumber(number); 
+	FlushBuffer(x, y, size, color);
+}
+
+function PrintMediumString(x, y, text) {
+    PrintString(x, y, OLED_FONT_MEDIUM, OLED_WHITE, text);
+}
+
+function PrintSmallNumber(x, y, number) {
+	PrintNumber(x, y, OLED_FONT_SMALL, OLED_WHITE, number);
+}
+
+function PrintSmallString(x, y, text) {
+    PrintString(x, y, OLED_FONT_SMALL, OLED_WHITE, text);
+}
+
+function PrintString(x, y, size, color, text) {
+	InsertString(text); 
+	FlushBuffer(x, y, size, color); 
+}
+
+function ProcessLoading() {
+	if(state[Screen] != Screen_Loading) {
+		return;
+	}
+	
+	state[LoadingTimer] += get_rtime();
+	
+	if(state[LoadingTimer] >= LOADING_PHASE_TIME) {
+		state[LoadingTimer] -= LOADING_PHASE_TIME;
+		state[LoadingPhase]++;
+		
+		if(state[LoadingPhase] >= 3) {
+			ChangeScreen(Screen_Home);
+			return;
+		}
+	}
+	
+	state[LoadingFrame]++;
+	display[Update] = TRUE;
+}
+	
+function ProcessInput() {
+	input[HoldingADS] = get_ival(button[ADS]);
+	input[HoldingFire] = get_ival(button[Fire]);
+	
+	switch(state[Screen]) {
+		case Screen_Loading { return; }
+		case Screen_Home { HandleHomeScreen(); return; }
+		case Screen_Menu { HandleMenuScreen(); return; }
+		default { HandleSubMenuScreen(); return; }
+	}	
+}
+
+function ProcessDisplay() {
+	display[Update] = TRUE;
+
+	if(!display[Update] || CheckScreenSaver()) {
+		return;
+	}
+	
+	cls_oled(OLED_BLACK);
+	
+	switch(state[Screen]) {
+		case Screen_Loading { UpdateLoadingScreen(); break; }
+		case Screen_Home { UpdateHomeScreen(); break; }
+		case Screen_Menu { UpdateMenuScreen(); break; }
+		default { UpdateSubMenuScreen(); break; }
+	}
+	
+	display[Update] = FALSE;
+}
+
+function ProcessOutput() {
+	if(state[Screen] == Screen_Home) {
+		GetStrafeStick();
+		ExecuteMods();
+	}
+	else {
+		block_all_inputs();
+	}
+}
+
+function ScrollMenu(adjustment) {
+	state[SubMenu] = AdjustValue(state[SubMenu], 0, 14, adjustment, TRUE);
+	UpdateSettingsInfo();
+}
+
+function SetButtonLayout() {
+	for(i = ADS; i <= Tact; i++) {
+		button[i] = _buttonLayout[settings[ButtonLayout]][i];
+	}
+}
+
+function SetStickLayout() {
+	stick[Move] = _stickLayout[settings[StickLayout]][Move];
+	stick[Strafe] = _stickLayout[settings[StickLayout]][Strafe];
+	stick[Look] = _stickLayout[settings[StickLayout]][Look];
+	stick[Rotate] = _stickLayout[settings[StickLayout]][Rotate];
+	
+
+	if((settings[StickLayout] == Southpaw) || (settings[StickLayout] == LegacySouthpaw)) {
+		switch(Iif(settings[ButtonLayout] > Beast, settings[ButtonLayout] - Beast, settings[ButtonLayout])) {
+			case Default {
+				button[Melee] = XB1_RS;
+				button[Focus] = XB1_LS;
+				return;
+			}
+			case Tactical {
+				button[Action] = XB1_LS;
+				button[Focus] = XB1_RS;
+				return;
+			}
+			case Lefty {
+				button[Focus] = XB1_LS;
+				button[Melee] = XB1_RS;
+				return;
+			}
+			case NomadCharlie {
+				button[Melee] = XB1_LS;
+				button[Focus] = XB1_RS;
+				return;
+			}
+			case NomadCharlieTactical {
+				button[Action] = XB1_LS;
+				button[Focus] = XB1_RS;
+				return;
+			}
+			case NomadCharlieLefty {
+				button[Focus] = XB1_LS;
+				button[Melee] = XB1_RS;
+				return;
+			}
+			case BumperJumper {
+				button[Melee] = XB1_LS;
+				button[Focus] = XB1_RS;
+				return;
+			}
+			case BumperJumperTactical {
+				button[Action] = XB1_LS;
+				button[Focus] = XB1_RS;
+				return;
+			}
+			case OneHandGunslinger {
+				button[Melee] = XB1_LS;
+				button[Focus] = XB1_RS;
+				return;
+			}
+			case StickAndMove {
+				button[Jump] = XB1_LS;
+				button[Focus] = XB1_RS;
+				return;
+			}
+			case Brawler {
+				button[Focus] = XB1_RS;
+				return;
+			}
+			case Beast {
+				button[Focus] = XB1_RS;
+				return;
+			}
+		}
+	}
+}
+
+function SettingsDefault() {
+	settings[AntiRecoil] = FALSE;
+	settings[Vertical] = 0;
+	settings[Horizontal] = 0;
+	
+	settings[AimAssist] = FALSE;
+	settings[AimSize] = 12;
+	settings[FireSize] = 12;
+	settings[AimFireSize] = 12;
+	settings[Speed] = 18;
+	settings[HipSize] = 4;
+	
+	settings[LeftStickAssist] = FALSE;
+	
+	settings[AimFireBoost] = FALSE;
+	settings[Boost] = 4;
+	
+	settings[YYSpam] = FALSE;
+	settings[YYDelay] = 25;
+	
+	settings[SlideCancel] = FALSE;
+	settings[SlideDelay] = 90;
+	
+	settings[HeadAssist] = FALSE;
+	settings[HeadAssistStrength] = 16;
+	settings[HeadAssistTime] = 180;
+	
+	settings[HoldBreath] = FALSE;
+	
+	settings[EnemyPing] = FALSE;
+	settings[EnemyPingDelay] = 1000;
+	
+	settings[DodgeShot] = FALSE;
+	settings[DodgeStartTime] = 10;
+	settings[DodgeDelayTime] = 80;
+	
+	settings[RapidFire] = FALSE;
+	settings[RapidFireHoldTime] = 20;
+	settings[RapidFireReleaseTime] = 30;
+
+	settings[AimAbuse] = FALSE;
+	settings[AimAbuseHoldTime] = 20;
+	settings[AimAbuseRestTime] = 30;
+	
+	settings[VMSpeed] = 0;
+
+	settings[ButtonLayout] = Default;
+	
+	settings[StickLayout] = Default;
+}
+
+function SettingsLoad() {
+	SpvarReset();
+
+	if(SpvarRead(0, 1)) {
+		settings[AntiRecoil] = SpvarRead(FALSE, TRUE);
+		settings[Vertical] = SpvarRead(0, 100);
+		settings[Horizontal] = SpvarRead(-100, 100);
+		
+		settings[AimAssist] = SpvarRead(FALSE, TRUE);
+		settings[AimSize] = SpvarRead(1, 50);
+		settings[FireSize] = SpvarRead(1, 50);
+		settings[AimFireSize] = SpvarRead(1, 50);
+		settings[Speed] = SpvarRead(1, 100);
+		settings[HipSize] = SpvarRead(1, 50);
+		
+		settings[LeftStickAssist] = SpvarRead(FALSE, TRUE);
+
+		settings[AimFireBoost] = SpvarRead(FALSE, TRUE);
+		settings[Boost] = SpvarRead(1, 10);
+
+		settings[YYSpam] = SpvarRead(FALSE, TRUE);
+		settings[YYDelay] = SpvarRead(1, 100);
+
+		settings[SlideCancel] = SpvarRead(FALSE, TRUE);
+		settings[SlideDelay] = SpvarRead(1, 100);
+
+		settings[HeadAssist] = SpvarRead(FALSE, TRUE);
+		settings[HeadAssistStrength] = SpvarRead(1, 100);
+		settings[HeadAssistTime] = SpvarRead(1, 2000);
+
+		settings[HoldBreath] = SpvarRead(FALSE, TRUE);
+
+		settings[EnemyPing] = SpvarRead(FALSE, TRUE);
+		settings[EnemyPingDelay] = SpvarRead(1, 5000);
+
+		settings[DodgeShot] = SpvarRead(FALSE, TRUE);
+		settings[DodgeStartTime] = SpvarRead(1, 100);
+		settings[DodgeDelayTime] = SpvarRead(1, 500);
+	
+		settings[RapidFire] = SpvarRead(FALSE, TRUE);
+		settings[RapidFireHoldTime] = SpvarRead(1, 1000);
+		settings[RapidFireReleaseTime] = SpvarRead(1, 1000);
+		
+		settings[AimAbuse] = SpvarRead(FALSE, TRUE);
+		settings[AimAbuseHoldTime] = SpvarRead(1, 300);
+		settings[AimAbuseRestTime] = SpvarRead(1, 300);
+		
+		settings[VMSpeed] = SpvarRead(0, 5);
+		
+		settings[ButtonLayout] = SpvarRead(Default, BeastFlipped);
+		
+		settings[StickLayout] = SpvarRead(Default, LegacySouthpawNoClickSwap);
+	}
+	else {
+		SettingsDefault();
+	}
+
+	StartLoadingScreen();
+}
+
+function SettingsSave() {
+	SpvarReset();
+
+	SpvarSave(1, 0, 1);
+
+	SpvarSave(settings[AntiRecoil], FALSE, TRUE);
+	SpvarSave(settings[Vertical], 0, 100);
+	SpvarSave(settings[Horizontal], -100, 100);
+
+	SpvarSave(settings[AimAssist], FALSE, TRUE);
+	SpvarSave(settings[AimSize], 1, 50);
+	SpvarSave(settings[FireSize], 1, 50);
+	SpvarSave(settings[AimFireSize], 1, 50);
+	SpvarSave(settings[Speed], 1, 100);
+	SpvarSave(settings[HipSize], 1, 50);
+
+	SpvarSave(settings[LeftStickAssist], FALSE, TRUE);
+	
+	SpvarSave(settings[AimFireBoost], FALSE, TRUE);
+	SpvarSave(settings[Boost], 1, 10);
+	
+	SpvarSave(settings[YYSpam], FALSE, TRUE);
+	SpvarSave(settings[YYDelay], 1, 100);
+	
+	SpvarSave(settings[SlideCancel], FALSE, TRUE);
+	SpvarSave(settings[SlideDelay], 1, 100);
+
+	SpvarSave(settings[HeadAssist], FALSE, TRUE);
+	SpvarSave(settings[HeadAssistStrength], 1, 100);
+	SpvarSave(settings[HeadAssistTime], 1, 2000);
+	
+	SpvarSave(settings[HoldBreath], FALSE, TRUE);
+	
+	SpvarSave(settings[EnemyPing], FALSE, TRUE);
+	SpvarSave(settings[EnemyPingDelay], 1, 5000);
+	
+	SpvarSave(settings[DodgeShot], FALSE, TRUE);
+	SpvarSave(settings[DodgeStartTime], 1, 100);
+	SpvarSave(settings[DodgeDelayTime], 1, 500);
+	
+	SpvarSave(settings[RapidFire], FALSE, TRUE);
+	SpvarSave(settings[RapidFireHoldTime], 1, 1000);
+	SpvarSave(settings[RapidFireReleaseTime], 1, 1000);
+	
+	SpvarSave(settings[AimAbuse], FALSE, TRUE);
+	SpvarSave(settings[AimAbuseHoldTime], 1, 300);
+	SpvarSave(settings[AimAbuseRestTime], 1, 300);
+	
+	SpvarSave(settings[VMSpeed], 0, 5);
+	
+	SpvarSave(settings[ButtonLayout], Default, BeastFlipped);
+	
+	SpvarSave(settings[StickLayout], Default, LegacySouthpawNoClickSwap);
+
+	ChangeScreen(Screen_Home);
+}
+
+function StartLoadingScreen() {
+	state[LoadingTimer] = 0;
+	state[LoadingFrame] = 0;
+	ChangeScreen(Screen_Loading);
+}
+
+function SpvarGetBitCount(v) {
+	spvar[Temp] = 0; 
+
+	while (v) { 
+		spvar[Temp]++; 
+		
+		v = abs(v >> 1);
+	}
+	return spvar[Temp];
+}
+
+function SpvarGetBitCount2(v1, v2) {
+	spvar[Temp] = max(SpvarGetBitCount(v1), SpvarGetBitCount(v2));
+	
+	if (SpvarIsSigned(v1, v2)) {
+		spvar[Temp]++;
+	}
+	
+	return spvar[Temp];
+}
+
+function SpvarIsSigned(v1, v2) {
+	return (v1 < 0) || (v2 < 0);
+}
+
+
+function SpvarMakeFullMask(bits) {
+	if (bits == 32) return -1;
+	
+	return 0x7FFFFFFF >> (31 - bits);
+}
+
+function SpvarMakeSign(bits) { 
+	return 1 << clamp(bits - 1, 0, 31);
+}
+
+function SpvarMakeSignMask(bits) {
+	return SpvarMakeFullMask(bits - 1);
+}
+
+function SpvarPack(v, bits) {
+	if (v < 0) { 
+		return (abs(v) & SpvarMakeSignMask(bits)) | SpvarMakeSign(bits);
+	}
+	
+	return v & SpvarMakeSignMask(bits); 
+}
+
+function SpvarRead(min, max) {
+	spvar[Bits] = SpvarGetBitCount2(min, max);
+
+	spvar[Value] = (SpvarReadSlot(spvar[Slot]) >> spvar[Bit]) & SpvarMakeFullMask(spvar[Bits]);
+	
+	if (spvar[Bits] >= 32 - spvar[Bit]) {
+		spvar[Value] = (spvar[Value] & SpvarMakeFullMask(32 - spvar[Bit])) | ((SpvarReadSlot(spvar[Slot] + 1) & SpvarMakeFullMask(spvar[Bits] - (32 - spvar[Bit]))) << (32 - spvar[Bit]));
+	}
+	
+	spvar[Bit] += spvar[Bits];
+	spvar[Value] = spvar[Value] & SpvarMakeFullMask(spvar[Bits]); 
+	
+	if (spvar[Bit] >= 32) {
+		spvar[Slot]++;
+		spvar[Bit] -= 32;
+	}
+	
+	if (SpvarIsSigned(min, max)) { 
+		spvar[Value] = SpvarUnpack(spvar[Value], spvar[Bits]); 
+	}
+
+	if (spvar[Value] < min || spvar[Value] > max) { 
+		return 0; 
+	}
+	
+	return spvar[Value];
+}
+
+function SpvarReadSlot(slot) {
+	return get_pvar(slot, 0x80000000, 0x7FFFFFFF, 0);
+}
+
+function SpvarReset() {
+	spvar[Slot] = SPVAR_1; 
+
+	spvar[Bit] = 0; 
+	spvar[Value] = 0;
+}
+
+function SpvarSave(v, min, max) {
+	spvar[Bits] = SpvarGetBitCount2(min, max);
+	
+	v = clamp(v, min, max);
+
+	if (SpvarIsSigned(min, max)) {
+		v = SpvarPack(v, spvar[Bits]);
+	}
+	
+	v = v & SpvarMakeFullMask(spvar[Bits]); 
+	
+	if (spvar[Bits] >= 32 - spvar[Bit]) { 
+		spvar[Value] = spvar[Value] | (v << spvar[Bit]);
+
+		set_pvar(spvar[Slot], spvar[Value]);
+
+		spvar[Slot]++;
+
+		spvar[Bits] -= (32 - spvar[Bit]);
+		
+		v = v >> (32 - spvar[Bit]);
+
+		spvar[Bit] = 0;
+	
+		spvar[Value] = 0;
+	}
+
+	spvar[Value] = spvar[Value] | (v << spvar[Bit]);
+
+	spvar[Bit] += spvar[Bits];
+	
+	if (!spvar[Bit]) {
+		spvar[Value] = 0;
+	}
+	
+	set_pvar(spvar[Slot], spvar[Value]);
+}
+
+function SpvarUnpack(v, bits) {
+	if (v & SpvarMakeSign(bits)) {
+		return 0 - (v & SpvarMakeSignMask(bits));
+	}
+
+	return v & SpvarMakeSignMask(bits);
+}
+
+function UpdateLoadingScreen() {
+	// Starfield
+	for(i = 0; i < 30; i++) {
+		pixel_oled((i * 79 + state[LoadingFrame] * 2) % OLED_WIDTH,
+		           (i * 37) % OLED_HEIGHT,
+		           1);
+	}
+
+	offset = state[LoadingTimer] * 160 / LOADING_PHASE_TIME;
+
+	if(state[LoadingPhase] == 0) {
+		offset = offset + 2;
+		PrintString(offset - ((7 * _fontWidth[OLED_FONT_MEDIUM]) >> 1), 20, OLED_FONT_MEDIUM, OLED_WHITE, _logoStrings[0]);
+		PrintString(offset - ((6 * _fontWidth[OLED_FONT_MEDIUM]) >> 1), 34, OLED_FONT_MEDIUM, OLED_WHITE, _logoStrings[1]);
+		return;
+	}
+
+	if(state[LoadingPhase] == 1) {
+		PrintSmallString(offset, 12, _loadingPhase2Strings[0]); // MULTIPLAYER
+		PrintSmallString(offset + 5 * _fontWidth[OLED_FONT_SMALL], 27, _loadingPhase2Strings[1]); // &
+		PrintSmallString(offset + 2 * _fontWidth[OLED_FONT_SMALL], 42, _loadingPhase2Strings[2]); // WARZONE
+		return;
+	}
+
+	// PrintString(offset + 20, 26, OLED_FONT_MEDIUM, OLED_WHITE, _loadingPhase3Strings[0]);
+}
+	
+function DrawBackground() {
+	state[ScreenSaver]++;
+	for(i = 0; i < 30; i++) {
+		pixel_oled((i * 79 + state[ScreenSaver] * 2) % OLED_WIDTH,
+		           (i * 37) % OLED_HEIGHT,
+		           1);
+	}
+
+	line_oled(0, 0, 127, 0, 1, OLED_WHITE);
+	line_oled(0, 63, 127, 63, 1, OLED_WHITE);
+	line_oled(0, 0, 0, 63, 1, OLED_WHITE);
+	line_oled(127, 0, 127, 63, 1, OLED_WHITE);
+}
+
+function UpdateHomeScreen() {
+	DrawBackground();
+
+	PrintMediumString(AlignCenter, AlignTop, _homeScreenStrings[HomeScreen_Title]);
+	PrintMediumString(AlignCenter, 22, _homeScreenStrings[HomeScreen_Subtitle]);
+	
+	if(get_console() == 4 || get_console() == 7) {
+		PrintSmallString(AlignCenter, 45, _homeScreenStrings[HomeScreen_PS]);
+	} else {
+		PrintSmallString(AlignCenter, 45, _homeScreenStrings[HomeScreen_Xbox]);
+	}
+}
+
+function UpdateMenuScreen() {
+	DrawBackground();
+	DrawSeparator(Separator_Top);
+
+	PrintSmallString(AlignCenter, AlignTop, _menuScreenStrings[state[SubMenu]]);
+	
+	DrawOptionSetting(settings[menu[Variable]]);
+}
+
+function UpdateSettingsInfo() {
+	menu[HasSubMenu] = _subMenuData[state[SubMenu]][HasSubMenu];
+	menu[Variable] = _subMenuData[state[SubMenu]][Variable];
+	menu[OptionMin] = _subMenuData[state[SubMenu]][OptionMin];
+	menu[OptionMax] = _subMenuData[state[SubMenu]][OptionMax];
+	menu[OptionType] = _subMenuData[state[SubMenu]][OptionType];
+}
+
+function UpdateSubMenuPageValueRange(page) {
+	menu[SettingVariable] = menu[Variable] + page + 1;
+	
+	switch(state[Screen]) {
+		case Screen_AntiRecoil {
+			menu[SettingMin] = _antiRecoilSettings[page][0];
+			menu[SettingMax] = _antiRecoilSettings[page][1];
+			menu[SettingType] = _antiRecoilSettings[page][2];
+			return;
+		}
+		case Screen_AimAssist {
+			menu[SettingMin] = _aimAssistSettings[page][0];
+			menu[SettingMax] = _aimAssistSettings[page][1];
+			menu[SettingType] = _aimAssistSettings[page][2];
+			return;
+		}
+		case Screen_AimFireBoost {
+			menu[SettingMin] = _aimFireBoostSettings[page][0];
+			menu[SettingMax] = _aimFireBoostSettings[page][1];
+			menu[SettingType] = _aimFireBoostSettings[page][2];
+			return;
+		}
+		case Screen_YYSpam {
+			menu[SettingMin] = _yySpamSettings[page][0];
+			menu[SettingMax] = _yySpamSettings[page][1];
+			menu[SettingType] = _yySpamSettings[page][2];
+			return;
+		}
+		case Screen_SlideCancel {
+			menu[SettingMin] = _slideCancelSettings[page][0];
+			menu[SettingMax] = _slideCancelSettings[page][1];
+			menu[SettingType] = _slideCancelSettings[page][2];
+			return;
+		}
+		case Screen_HeadAssist {
+			menu[SettingMin] = _headAssistSettings[page][0];
+			menu[SettingMax] = _headAssistSettings[page][1];
+			menu[SettingType] = _headAssistSettings[page][2];
+			return;
+		}
+		case Screen_EnemyPing {
+			menu[SettingMin] = _enemyPingSettings[page][0];
+			menu[SettingMax] = _enemyPingSettings[page][1];
+			menu[SettingType] = _enemyPingSettings[page][2];
+			return;
+		}
+		case Screen_DodgeShot {
+			menu[SettingMin] = _dodgeShotSettings[page][0];
+			menu[SettingMax] = _dodgeShotSettings[page][1];
+			menu[SettingType] = _dodgeShotSettings[page][2];
+			return;
+		}
+		case Screen_RapidFire {
+			menu[SettingMin] = _rapidFireSettings[page][0];
+			menu[SettingMax] = _rapidFireSettings[page][1];
+			menu[SettingType] = _rapidFireSettings[page][2];
+			return;
+			}
+		case Screen_AimAbuse {
+			menu[SettingMin] = _aimAbuseSettings[page][0];
+			menu[SettingMax] = _aimAbuseSettings[page][1];
+			menu[SettingType] = _aimAbuseSettings[page][2];
+			return;
+		}
+	}
+
+	menu[SettingMin] = 0;
+	menu[SettingMax] = 0;
+}
+
+function DrawSubMenuValueRange(low, high) {
+	PrintSmallNumber(AlignLeft, 20, low);
+	PrintSmallNumber(AlignRight, 20, high);
+}
+
+function UpdateSubMenuScreen() {
+	DrawBackground();
+
+	if(!menu[HasSubMenu]) {
+		PrintSmallString(AlignCenter, 20, _nothingToEdit[0]);
+		PrintSmallString(AlignCenter, 31, _nothingToEdit[1]);
+		return;
+	}
+
+	DrawSeparator(Separator_Top);
+	PrintSmallString(AlignLeft, AlignTop, GetSubMenuHeader(menu[Page]));
+	
+	DrawSubMenuValueRange(menu[SettingMin], menu[SettingMax]);
+
+	PrintLargeNumber(AlignCenter, 30, settings[menu[SettingVariable]]);
+}
+
+fcombo Combo_AimAbuse {
+	set_val(button[ADS], 100);
+	wait(settings[AimAbuseHoldTime]);
+	set_val(button[ADS], 0);
+	wait(settings[AimAbuseRestTime]);
+}
+
+fcombo Combo_AimAssistv4 {
+	Output(POLAR_RY, aimassist[AimAssistSize] * 327);
+	wait(20);
+	Output(POLAR_RY, aimassist[AimAssistSize] * -327);
+	wait(20);
+}
+
+fcombo Combo_AimFireBoost {
+	Output(POLAR_LX, (settings[Boost] * 7) * 327);
+	Output(POLAR_LY, (settings[Boost] * 2) * 327);
+	wait(40);
+	Output(POLAR_LX, (settings[Boost] * -7) * 327);
+	Output(POLAR_LY, (settings[Boost] * -2) * 327);
+	wait(40);
+	Output(POLAR_LX, (settings[Boost] * 7) * 327);
+	Output(POLAR_LY, (settings[Boost] * -2) * 327);
+	wait(40);
+	Output(POLAR_LX, (settings[Boost] * -7) * 327);
+	Output(POLAR_LY, (settings[Boost] * 2) * 327);
+	wait(40);
+}
+
+fcombo Combo_DodgeShot {
+	wait(settings[DodgeStartTime] * 200);
+	set_val(button[Action], 100);
+	wait(settings[DodgeDelayTime]);
+	set_val(button[Action], 0);
+	wait(settings[DodgeDelayTime]);	
+	set_val(button[Jump], 100);
+	wait(40);
+	set_val(button[Jump], 0);
+	wait(settings[DodgeDelayTime]);
+}
+
+fcombo Combo_EnemyPing {
+	set_val(button[Ping], 100);
+	wait(20)
+	set_val(button[Ping], 0);
+	wait(20)
+	set_val(button[Ping], 100);
+	wait(20)
+	set_val(button[Ping], 0); 
+	wait(settings[EnemyPingDelay]);
+}
+
+fcombo Combo_HeadAssist {
+	Output(POLAR_RY, settings[HeadAssistStrength] * -327);
+	wait(settings[HeadAssistTime]);
+}
+
+fcombo Combo_LeftStickAssist {
+	Output(POLAR_LX, -492);
+	Output(POLAR_LY, 0);
+	wait(40);
+	Output(POLAR_LX, 492);
+	Output(POLAR_LY, 492);
+	wait(40);
+	Output(POLAR_LX, -492);
+	Output(POLAR_LY, -492);
+	wait(40);
+	Output(POLAR_LX, 492);
+	Output(POLAR_LY, 0);
+	wait(40);
+	Output(POLAR_LX, -492);
+	Output(POLAR_LY, 492);
+	wait(40);
+	Output(POLAR_LX, 492);
+	Output(POLAR_LY, -492);
+	wait(40);
+}
+
+fcombo Combo_RapidFire {
+	set_val(button[Fire], 100);
+	wait(settings[RapidFireHoldTime]);
+	set_val(button[Fire], 0);
+	wait(settings[RapidFireReleaseTime]);
+}
+
+fcombo Combo_SlideCancel {
+	set_val(button[Action], 100);
+	wait(settings[SlideDelay]);
+	set_val(button[Action], 0);
+	wait(20);
+	set_val(button[Action], 100);             
+	wait(60);
+	set_val(button[Action], 0);
+	set_val(stick[SprintButton], 100);
+	wait(40);
+	set_val(button[Action], 100);
+	set_val(button[Jump], 100);
+	wait(60);
+	set_val(button[Action], 0);
+	set_val(button[Jump], 0);
+}
+
+fcombo Combo_YYSpam {
+	set_val(button[SwitchWeapon], 100);
+	wait(settings[YYDelay]);
+	set_val(button[SwitchWeapon], 0);
+	wait(settings[YYDelay]);
+	set_val(button[SwitchWeapon], 100);
+	wait(settings[YYDelay]);
+	set_val(button[SwitchWeapon], 0);
+	wait(settings[YYDelay]);
+	set_val(button[SwitchWeapon], 100);
+	wait(settings[YYDelay]);
+	set_val(button[SwitchWeapon], 0);
+	wait(settings[YYDelay]);
+	set_val(button[SwitchWeapon], 100);
+	wait(settings[YYDelay]);
+	set_val(button[SwitchWeapon], 0);
+	wait(settings[YYDelay]);
+}
+
+const int16 cos[] = {
+	328, 328, 327, 327, 327, 326, 326, 325, 324, 324, 323, 322, 321, 319, 318, 317, 315, 313,
+	312, 310, 308, 306, 304, 302, 299, 297, 295, 292, 289, 287, 284, 281, 278, 275, 272, 268,
+	265, 262, 258, 255, 251, 247, 244, 240, 236, 232, 228, 223, 219, 215, 211, 206, 202, 197,
+	193, 188, 183, 178, 174, 169, 164, 159, 154, 149, 144, 138, 133, 128, 123, 117, 112, 107,
+	101, 96, 90, 85, 79, 74, 68, 63, 57, 51, 46, 40, 34, 29, 23, 17, 11, 6,
+	0, -6, -11, -17, -23, -29, -34, -40, -46, -51, -57, -63, -68, -74, -79, -85, -90, -96,
+	-101, -107, -112, -117, -123, -128, -133, -138, -144, -149, -154, -159, -164, -169, -174, -178, -183, -188,
+	-193, -197, -202, -206, -211, -215, -219, -223, -228, -232, -236, -240, -244, -247, -251, -255, -258, -262,
+	-265, -268, -272, -275, -278, -281, -284, -287, -289, -292, -295, -297, -299, -302, -304, -306, -308, -310,
+	-312, -313, -315, -317, -318, -319, -321, -322, -323, -324, -324, -325, -326, -326, -327, -327, -327, -328,
+	-328, -328, -327, -327, -327, -326, -326, -325, -324, -324, -323, -322, -321, -319, -318, -317, -315, -313,
+	-312, -310, -308, -306, -304, -302, -299, -297, -295, -292, -289, -287, -284, -281, -278, -275, -272, -268,
+	-265, -262, -258, -255, -251, -247, -244, -240, -236, -232, -228, -223, -219, -215, -211, -206, -202, -197,
+	-193, -188, -183, -178, -174, -169, -164, -159, -154, -149, -144, -138, -133, -128, -123, -117, -112, -107,
+	-101, -96, -90, -85, -79, -74, -68, -63, -57, -51, -46, -40, -34, -29, -23, -17, -11, -6,
+	-0, 6, 11, 17, 23, 29, 34, 40, 46, 51, 57, 63, 68, 74, 79, 85, 90, 96,
+	101, 107, 112, 117, 123, 128, 133, 138, 144, 149, 154, 159, 164, 169, 174, 178, 183, 188,
+	193, 197, 202, 206, 211, 215, 219, 223, 228, 232, 236, 240, 244, 247, 251, 255, 258, 262,
+	265, 268, 272, 275, 278, 281, 284, 287, 289, 292, 295, 297, 299, 302, 304, 306, 308, 310,
+	312, 313, 315, 317, 318, 319, 321, 322, 323, 324, 324, 325, 326, 326, 327, 327, 327, 328
+};
+
+const int16 sin[] = { 
+	0, 6, 11, 17, 23, 29, 34, 40, 46, 51, 57, 63, 68, 74, 79, 85, 90, 96,
+	101, 107, 112, 117, 123, 128, 133, 138, 144, 149, 154, 159, 164, 169, 174, 178, 183, 188,
+	193, 197, 202, 206, 211, 215, 219, 223, 228, 232, 236, 240, 244, 247, 251, 255, 258, 262,
+	265, 268, 272, 275, 278, 281, 284, 287, 289, 292, 295, 297, 299, 302, 304, 306, 308, 310,
+	312, 313, 315, 317, 318, 319, 321, 322, 323, 324, 324, 325, 326, 326, 327, 327, 327, 328,
+	328, 328, 327, 327, 327, 326, 326, 325, 324, 324, 323, 322, 321, 319, 318, 317, 315, 313,
+	312, 310, 308, 306, 304, 302, 299, 297, 295, 292, 289, 287, 284, 281, 278, 275, 272, 268,
+	265, 262, 258, 255, 251, 247, 244, 240, 236, 232, 228, 223, 219, 215, 211, 206, 202, 197,
+	193, 188, 183, 178, 174, 169, 164, 159, 154, 149, 144, 138, 133, 128, 123, 117, 112, 107,
+	101, 96, 90, 85, 79, 74, 68, 63, 57, 51, 46, 40, 34, 29, 23, 17, 11, 6,
+	0, -6, -11, -17, -23, -29, -34, -40, -46, -51, -57, -63, -68, -74, -79, -85, -90, -96,
+	-101, -107, -112, -117, -123, -128, -133, -138, -144, -149, -154, -159, -164, -169, -174, -178, -183, -188,
+	-193, -197, -202, -206, -211, -215, -219, -223, -228, -232, -236, -240, -244, -247, -251, -255, -258, -262,
+	-265, -268, -272, -275, -278, -281, -284, -287, -289, -292, -295, -297, -299, -302, -304, -306, -308, -310,
+	-312, -313, -315, -317, -318, -319, -321, -322, -323, -324, -324, -325, -326, -326, -327, -327, -327, -328,
+	-328, -328, -327, -327, -327, -326, -326, -325, -324, -324, -323, -322, -321, -319, -318, -317, -315, -313,
+	-312, -310, -308, -306, -304, -302, -299, -297, -295, -292, -289, -287, -284, -281, -278, -275, -272, -268,
+	-265, -262, -258, -255, -251, -247, -244, -240, -236, -232, -228, -223, -219, -215, -211, -206, -202, -197,
+	-193, -188, -183, -178, -174, -169, -164, -159, -154, -149, -144, -138, -133, -128, -123, -117, -112, -107,
+	-101, -96, -90, -85, -79, -74, -68, -63, -57, -51, -46, -40, -34, -29, -23, -17, -11, -6
+};
